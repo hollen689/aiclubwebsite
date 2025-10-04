@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madison AI Club | JMU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .neural-net {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(138, 43, 226, 0.6);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
+        .connection {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.3), transparent);
+            transform-origin: left center;
+            animation: flow 4s linear infinite;
+        }
+
+        @keyframes flow {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.7);
+            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #8a2be2, #da70d6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8a2be2, #da70d6);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 10;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 5%;
+        }
+
+        .hero-content h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #8a2be2, #da70d6, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, #8a2be2, #da70d6);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease-out 0.4s both;
+            box-shadow: 0 10px 30px rgba(138, 43, 226, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(138, 43, 226, 0.6);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Features Section */
+        .features {
+            position: relative;
+            z-index: 10;
+            padding: 5rem 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(138, 43, 226, 0.8);
+            box-shadow: 0 20px 40px rgba(138, 43, 226, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #da70d6;
+        }
+
+        .feature-card p {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem 5%;
+            background: rgba(10, 10, 10, 0.9);
+            border-top: 1px solid rgba(138, 43, 226, 0.3);
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+            
+            nav {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="neural-net" id="neuralNet"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">Madison AI</div>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#events">Events</a>
+            <a href="#projects">Projects</a>
+            <a href="#join">Join</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Madison AI Club</h1>
+            <p>Exploring the Future of Artificial Intelligence at JMU</p>
+            <a href="#join" class="cta-button">Join the Revolution</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="about">
+        <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>Hands-On Projects</h3>
+            <p>Build real AI applications, from machine learning models to neural networks, and gain practical experience in the field.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h3>Learn & Grow</h3>
+            <p>Weekly workshops, guest speakers, and collaborative learning sessions to deepen your understanding of AI technologies.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🚀</div>
+            <h3>Innovation Hub</h3>
+            <p>Connect with like-minded students, participate in hackathons, and push the boundaries of what's possible with AI.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Madison AI Club | James Madison University</p>
+    </footer>
+
+    <script>
+        // Generate neural network animation
+        const neuralNet = document.getElementById('neuralNet');
+        const numNodes = 30;
+        const nodes = [];
+
+        // Create nodes
+        for (let i = 0; i < numNodes; i++) {
+            const node = document.createElement('div');
+            node.className = 'node';
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            node.style.left = x + 'px';
+            node.style.top = y + 'px';
+            node.style.animationDelay = Math.random() * 3 + 's';
+            neuralNet.appendChild(node);
+            nodes.push({ element: node, x, y });
+        }
+
+        // Create connections between nearby nodes
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const dx = nodes[j].x - nodes[i].x;
+                const dy = nodes[j].y - nodes[i].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 200) {
+                    const connection = document.createElement('div');
+                    connection.className = 'connection';
+                    connection.style.left = nodes[i].x + 'px';
+                    connection.style.top = nodes[i].y + 'px';
+                    connection.style.width = distance + 'px';
+                    connection.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
+                    connection.style.animationDelay = Math.random() * 4 + 's';
+                    neuralNet.appendChild(connection);
+                }
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Animate nodes slowly
+        function animateNodes() {
+            nodes.forEach(node => {
+                node.vx = (node.vx || 0) + (Math.random() - 0.5) * 0.1;
+                node.vy = (node.vy || 0) + (Math.random() - 0.5) * 0.1;
+                node.vx *= 0.98;
+                node.vy *= 0.98;
+                
+                node.x += node.vx;
+                node.y += node.vy;
+                
+                if (node.x < 0 || node.x > window.innerWidth) node.vx *= -1;
+                if (node.y < 0 || node.y > window.innerHeight) node.vy *= -1;
+                
+                node.element.style.left = node.x + 'px';
+                node.element.style.top = node.y + 'px';
+            });
+            
+            requestAnimationFrame(animateNodes);
+        }
+        
+        animateNodes();
+    </script>
+</body>
+</html>
